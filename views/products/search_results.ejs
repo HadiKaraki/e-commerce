@@ -1,0 +1,90 @@
+<% layout('layouts/boilerplate')%>
+
+    <head>
+        <meta charset="utf-8">
+        <title>Search results</title>
+        <link rel="stylesheet" href="/Search_results.css">
+    </head>
+
+    <body>
+        <section id="container">
+            <% if(results.length>0) { %>
+                <% for(let result of results) {%>
+                    <a href="/product/<%= result._id %> ">
+                        <div class="<%= result.brand %>" id="product">
+                            <div id="image">
+                                <img src="<%= result.images[0].url %> " class="lazy">
+                            </div>
+                            <div id="bottom-panel">
+                                <div id="description">
+                                    <strong>
+                                        <p>
+                                            <%= result.name %>
+                                        </p>
+                                    </strong>
+                                </div>
+                                <div id="price">
+                                    <p>
+                                        $
+                                        <%= result.price %>
+                                    </p>
+                                </div>
+                                <div id="in-stock">
+                                    <p>
+                                        <%= result.nb_in_stock %> in stock
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                    <% } %>
+        </section>
+        <% if(results.length<=2) {%>
+            <style>
+                @media (max-width: 359px) {
+                    #footer {
+                        position: fixed !important;
+                        bottom: 0 !important;
+                        width: 100% !important;
+                    }
+                }
+                
+                @media (min-width: 400px) {
+                    #footer {
+                        position: fixed !important;
+                        bottom: 0 !important;
+                        width: 100% !important;
+                    }
+                }
+            </style>
+            <% } %>
+                <% } else {%>
+                    <style>
+                        #container {
+                            display: block !important;
+                        }
+                    </style>
+                    <div id="not-found">
+                        <h1>No results found</h1>
+                    </div>
+                    <div id="body-parag">
+                        <p>The product that you searched for is unavailable, or a spelling mistake may exist in your searching. You can lookup products through these categories:
+                            <a href="/category/APPLIANCE">Appliances</a>, <a href="/category/MOBILE">Mobile</a>,
+                            <a href="/category/TV">TVs</a>, <a href="/category/CAMERA">Cameras</a>, <a href="/category/GAMING">Gaming</a>, <a href="/category/LAPTOP">Laptops</a>.
+                        </p>
+                    </div>
+                    <style>
+                        #footer {
+                            position: fixed !important;
+                            bottom: 0 !important;
+                            width: 100% !important;
+                        }
+                        
+                        @media (max-width: 768px) {
+                            body {
+                                height: 20vh;
+                            }
+                        }
+                    </style>
+                    <% } %>
+    </body>

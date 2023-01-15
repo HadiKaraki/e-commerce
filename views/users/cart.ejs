@@ -1,0 +1,75 @@
+<% layout('layouts/boilerplate')%>
+
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title>Cart items</title>
+        <link rel="stylesheet" href="/Cart.css">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    </head>
+
+    <body>
+        <% if(currUser.cart.length>0) {%>
+            <section id="container">
+                <div id="cart">
+                    <div id="top-panel">
+                        <button id="edit-button" type="button">
+                            <i class="fa fa-pencil" style="font-size: 24px;"></i>
+                            Edit
+                        </button>
+                        <button style="display: none;" id="close-edit">X</button>
+                        <h1>Cart</h1>
+                    </div>
+                    <% for(let product of currUser.cart) {%>
+                        <a href="/product/<%= product._id %> ">
+                            <form action="/product/removeFromCart" method="POST">
+                                <section id="product">
+                                    <div id="product-image">
+                                        <img src="<%= product.images[0].url %> ">
+                                    </div>
+                                    <div id="product-name">
+                                        <h7>
+                                            <%= product.name %>
+                                        </h7>
+                                    </div>
+                                    <div id="product-price">
+                                        <h7 style="color: red;">
+                                            $
+                                            <%= product.price %>
+                                        </h7>
+                                    </div>
+                        </a>
+                        <div id="checkbox-input" style="display: none;">
+                            <input type="checkbox" id="checkbox-<%= product._id %>" class="check-product" name="removeProducts[]" value="<%=product._id%>">
+                            <label for="checkbox-<%= product._id %>" style="color: red; font-weight: bold; cursor: pointer;">Remove?</label>
+                        </div>
+                        </section>
+                        <% } %>
+                            <div id="bottom-panel">
+                                <div>
+                                    <button id="remove-button" disabled>Remove</button>
+                                </div>
+                                </form>
+                                <form action="/user/checkout" method="GET">
+                                    <button id="checkout-button" style="float: left;">Proceed to checkout</button>
+                                </form>
+                            </div>
+                </div>
+            </section>
+            <% if(currUser.cart.length<=3) {%>
+                <style>
+                    @media (max-width: 768px) {
+                        #footer {
+                            position: fixed !important;
+                            bottom: 0 !important;
+                            width: 100% !important;
+                        }
+                    }
+                </style>
+                <% } %>
+                    <% } else {%>
+                        <h1>No products in cart currently.</h1>
+                        <% } %>
+
+                            <script src="/cart.js"></script>
+    </body>

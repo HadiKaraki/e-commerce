@@ -1,0 +1,96 @@
+<% layout('/layouts/boilerplate')%>
+
+    <head>
+        <meta charset="UTF-8">
+        <title>
+            <%= category %>
+        </title>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <link rel="stylesheet" href="/Category.css">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    </head>
+
+    <body>
+        <aside id="brandsAside">
+            <ul id="categories-list">
+                <h3 style="margin-left: 10px;">Brands</h3>
+                <li id="category"><input class="filter" type="checkbox" id="Samsung" value="Samsung"><label for="Samsung">Samsung</label></li>
+                <% if(category==="MOBILE" ) {%>
+                    <li id="category"><input class="filter" type="checkbox" id="Apple" value="Apple"><label for="Apple">Apple</label></li>
+                    <li id="category"><input class="filter" type="checkbox" id="OnePlus" value="OnePlus">OnePlus
+                    </li>
+                    <% } %>
+                        <% if(category==="APPLIANCE" ) {%>
+                            <li id="category"><input class="filter" type="checkbox" id="LG" value="LG">LG</li>
+                            <li id="category"><input class="filter" type="checkbox" id="Panasonic" value="Panasonic">Panasonic
+                            </li>
+                            <% } %>
+                                <% if(category==="TV" ) {%>
+                                    <li id="category"><input class="filter" type="checkbox" id="LG" value="LG"><label for="LG">LG</label></li>
+                                    <li id="category"><input class="filter" type="checkbox" id="Sony" value="Sony"><label for="Sony">Sony</label></li>
+                                    <li id="category"><input class="filter" type="checkbox" id="Panasonic" value="Panasonic"><label for="Panasonic">Panasonic</label></li>
+                                    <% } %>
+            </ul>
+        </aside>
+        <aside id="productsAside">
+            <section id="container">
+                <% for(let product of products) {%>
+                    <a class="<%= product.brand %>" href="/product/<%= product._id %> ">
+                        <div id="product" class="product">
+                            <div id="image">
+                                <img crossorigin="anonymous" src="<%= product.images[0].url %> ">
+                            </div>
+                            <div id="bottom-panel">
+                                <div id="description">
+                                    <strong>
+                                        <p>
+                                            <%= product.name %>
+                                        </p>
+                                    </strong>
+                                </div>
+                                <div id="price">
+                                    <p>
+                                        $
+                                        <%= product.price %>
+                                    </p>
+                                </div>
+                                <div id="in-stock">
+                                    <p>
+                                        <%= product.nb_in_stock %> in stock
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                    <% } %>
+            </section>
+            <% if(products.length<=2) {%>
+                <style>
+                    @media (max-width: 359px) {
+                        #footer {
+                            position: fixed !important;
+                            bottom: 0 !important;
+                            width: 100% !important;
+                        }
+                    }
+                    
+                    @media (min-width: 400px) {
+                        #footer {
+                            position: fixed !important;
+                            bottom: 0 !important;
+                            width: 100% !important;
+                        }
+                    }
+                    
+                    @media (max-width: 768px) {
+                        #footer {
+                            position: block !important;
+                            bottom: 0 !important;
+                            width: 100% !important;
+                        }
+                    }
+                </style>
+                <% } %>
+        </aside>
+        <script src="/filterCategories.js"></script>
+    </body>

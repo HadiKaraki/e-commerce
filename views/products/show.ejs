@@ -1,0 +1,341 @@
+<% layout('layouts/boilerplate')%>
+
+    <head>
+        <meta charset="UTF-8">
+        <title>
+            <%= populatedProduct.name %>
+        </title>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <link rel="stylesheet" href="/Show.css">
+        <link rel="stylesheet" href="/Stars.css">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    </head>
+
+    <body>
+        <section class="container">
+            <div class="left-child">
+                <% if(currentUser && currentUser.admin) {%>
+                    <% } %>
+                        <div id="image">
+                            <div id="productCarousel" class="carousel slide" data-ride="carousel">
+                                <div class="carousel-inner">
+                                    <% populatedProduct.images.forEach((img, i)=> { %>
+                                        <div class="carousel-item <%= i === 0 ? 'active' : ''%>">
+                                            <img src="<%= img.url%>" class="d-block w-100">
+                                        </div>
+                                        <% }) %>
+
+                                </div>
+                                <% if(populatedProduct.images.length> 1) {%>
+                                    <a class="carousel-control-prev" href="#productCarousel" role="button" data-slide="prev">
+                                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                        <span class="sr-only">Previous</span>
+                                    </a>
+                                    <a class="carousel-control-next" href="#productCarousel" role="button" data-slide="next">
+                                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                        <span class="sr-only">Next</span>
+                                    </a>
+                                    <% } %>
+                            </div>
+                        </div>
+                        <div id="overlay"></div>
+                        <div id="rating-panel">
+                            <% if(!reviewed) {%>
+                                <form action="/review/new/<%= populatedProduct._id %> " method="POST" novalidate>
+                                    </p>
+                                    <div id="text-box">
+                                        <label style="text-decoration: underline;" class="form-label" for="body">Review
+                                            Text</label>
+                                        <textarea class="form-control" name="review[body]" id="body" cols="30" rows="3" required></textarea>
+                                        <div class="valid-feedback">
+                                            Looks good!
+                                        </div>
+                                    </div>
+                                    <button class="btn btn-success">Submit</button>
+                                    <p>Leave a rating:</p>
+                                    <fieldset class="starability-basic">
+                                        <input type="radio" id="no-rate" class="input-no-rate" name="review[rating]" value="0" checked aria-label="No rating." />
+                                        <input type="radio" id="rate1" name="review[rating]" value="1" />
+                                        <label for="rate1">1 star.</label>
+                                        <input type="radio" id="rate2" name="review[rating]" value="2" />
+                                        <label for="rate2">2 stars.</label>
+                                        <input type="radio" id="rate3" name="review[rating]" value="3" />
+                                        <label for="rate3">3 stars.</label>
+                                        <input type="radio" id="rate4" name="review[rating]" value="4" />
+                                        <label for="rate4">4 stars.</label>
+                                        <input type="radio" id="rate5" name="review[rating]" value="5" />
+                                        <label for="rate5">5 stars.</label>
+                                    </fieldset>
+                                </form>
+                                <% } else {%>
+                                    <form action="/review/delete/<%= userReview._id %>?_method=DELETE" method="POST">
+                                        <h2 style="margin-top: 20px;">Your rating:</h2>
+                                        <div id="review">
+                                            <% if(userReview.body) {%>
+                                                <div style="margin-top: 10px;" id="review-body">
+                                                    <p style="font-size: 18px;">
+                                                        <%= userReview.body %>
+                                                    </p>
+                                                </div>
+                                                <% } %>
+                                                    <% if(userReview.rating) {%>
+                                                        <div id="review-rating">
+                                                            <p class="starability-result" data-rating="<%=userReview.rating%>">
+                                                                Rated:
+                                                                <%= userReview.rating %> stars
+                                                            </p>
+                                                        </div>
+                                                        <% } %>
+                                                            <% if(currentUser &&
+                                                                userReview.author._id.equals(currentUser._id)) {%>
+                                                                <button id="delete-review">Delete</button>
+                                                                <% } %>
+                                    </form>
+                                    </div>
+                                    <% } %>
+                        </div>
+                        <% if(currentUser && currentUser.admin){ %>
+                            <div id="delete-product">
+                                <form action="/product/<%= populatedProduct._id %>?_method=DELETE" method="POST">
+                                    <button type="submit" id="delete-product-button">DELETE</button>
+                                    <a id="edit-product" href="/product/edit/<%= populatedProduct._id %> ">EDIT</a>
+                                </form>
+                            </div>
+                            <% } %>
+            </div>
+            <section id="hidden-container">
+                <button onclick="close()">x</button>
+                <section id="top-section">
+                    <div id="big-image">
+                        <img id="top-image" src="<%= populatedProduct.images[0].url %>">
+                    </div>
+                </section>
+                <section id="bottom-section">
+                    <div id="rest-of-images">
+                        <img id="small-image" src="../tv.jpg" onclick="change(this)">
+                    </div>
+                </section>
+            </section>
+            <div class="right-child">
+                <div id="top-panel">
+                    <h1 style="color: blue;">
+                        <%= populatedProduct.name %>
+                    </h1>
+                    <h1 style="color: red;">
+                        $
+                        <%= populatedProduct.price %>
+                    </h1>
+                </div>
+                <div id="middle-panel">
+                    <div id="description">
+                        <h3>
+                            <%= populatedProduct.description %>
+                        </h3>
+                    </div>
+                    <div id="item-code">
+                        <strong>
+                                    <p style="margin-right: 80px; display: inline;">Item Code:</p>
+                                </strong>
+                        <p style="display: inline; color: blue; font-size: 20px;">
+                            <%= populatedProduct.code %>
+                        </p>
+                    </div>
+                    <div id="in-stock">
+                        <strong>
+                                    <p style="margin-right: 80px; display: inline;">In stock:</p>
+                                </strong>
+                        <% if(populatedProduct.in_stock) {%>
+                            <p style="display: inline; font-size: 20px;"><span style="color: red;">&#10003;</span> Yes</p>
+                            <% } else {%>
+                                <p>No</p>
+                                <% } %>
+                    </div>
+                    <div id="nb-in-stock">
+                        <strong>
+                                    <p style="margin-right: 80px; display: inline;">Left in stock:</p>
+                                </strong>
+                        <p style="display: inline; font-size: 20px;">
+                            <%= populatedProduct.nb_in_stock %> left
+                        </p>
+                    </div>
+                    <div id="brand">
+                        <strong>
+                                    <p style="margin-right: 120px; display: inline;">Brand:
+                                    </p>
+                                    <p style="display: inline; font-size: 20px;">
+                                        <%= populatedProduct.brand %>
+                                    </p>
+                                </strong>
+                        <div id="average-rating">
+                            <strong>
+                                        <p style="margin: 0; margin-top: 30px;">Average rating:</p>
+                                    </strong>
+                            <p class="starability-result" style="margin-top: 10px;" data-rating="<%=averageRating%>">
+                            </p>
+                            <p style="margin: 0;">
+                                <%= populatedProduct.reviews.length %> reviews
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <div id="bottom-panel">
+                    <% if(!addedToCart) {%>
+                        <form action="/product/addToCart/<%= populatedProduct._id %>" method="POST">
+                            <button class="cart-button" id="addcart-button" style="font-weight: bold;"><i
+                                            class="fa fa-shopping-cart" style="font-size:24px"></i> ADD TO CART</button>
+                        </form>
+                        <% } else {%>
+                            <form action="/product/removeFromCart/<%= populatedProduct._id %>" method="POST">
+                                <button class="cart-button" id="removecart-button" style="background-color: red; font-weight: bold;"><i
+                                                class="fa fa-shopping-cart" style="font-size:24px;"></i> REMOVE FROM
+                                            CART</button>
+                            </form>
+                            <% } %>
+                                <% if(!addedToWishlist) {%>
+                                    <form action="/product/addToWishlist/<%= populatedProduct._id %>" method="POST">
+                                        <button class="wishlist-button" id="addwishlist-button" style="font-weight: bold;"><i class="fa fa-heart-o"
+                                                        aria-hidden="true" style="font-size:24px;"></i> ADD TO
+                                                    WISHLIST</button>
+                                    </form>
+                                    <% } else {%>
+                                        <form action="/product/removeFromWishlist/<%= populatedProduct._id %>" method="POST">
+                                            <button class="wishlist-button" id="removewishlist-button" style="background-color: red; font-weight: bold;"><i
+                                                            class="fa fa-heart-o" aria-hidden="true"
+                                                            style="font-size:24px;"></i> REMOVE FROM WISHLIST</button>
+                                        </form>
+                                        <% } %>
+                </div>
+                <div id="reviews-panel">
+                    <h1 style="text-decoration: underline; margin-bottom: 20px;">Reviews:</h1>
+                    <% for(let review of populatedProduct.reviews) {%>
+                        <div id="review">
+                            <div id="review-author">
+                                <h3>
+                                    <%= review.author.username %>
+                                </h3>
+                            </div>
+                            <% if(review.body) {%>
+                                <div id="review-body">
+                                    <p>
+                                        <%= review.body %>
+                                    </p>
+                                </div>
+                                <% } %>
+                                    <% if(review.rating) {%>
+                                        <div id="review-rating">
+                                            <p class="starability-result" data-rating="<%=review.rating%>">
+                                                Rated:
+                                                <%= review.rating %> stars
+                                            </p>
+                                        </div>
+                                        <% } %>
+                        </div>
+                        <% } %>
+                </div>
+            </div>
+        </section>
+    </body>
+
+    <script>
+        var product_id = '<%- populatedProduct.id %>'
+            // document.getElementById('removecart-button').addEventListener('click', removeFromCart)
+
+        function addToCart(e) {
+            var cartButton = document.getElementById('addcart-button');
+            e.preventDefault();
+            var params = "id=" + product_id;
+            const xhttp = new XMLHttpRequest();
+            xhttp.open('POST', '/product/addToCart', true);
+            xhttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+
+            xhttp.onload = function() {
+                console.log(this.responseText);
+            }
+
+            xhttp.send(params);
+
+            changeButton(cartButton)
+        }
+
+        function removeFromCart(e) {
+            var cartButton = document.getElementById('removecart-button');
+            e.preventDefault();
+            var params = "id=" + product_id;
+            const xhttp = new XMLHttpRequest();
+
+            xhttp.open('POST', '/product/removeFromCart', true);
+
+            xhttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+
+            xhttp.onload = function() {
+                console.log(this.responseText);
+            }
+
+            xhttp.send(params);
+
+            changeButton(cartButton)
+        }
+
+        function addToWishlist(e) {
+            var wishlistButton = document.getElementById('addwishlist-button');
+            e.preventDefault();
+            var params = "id=" + product_id;
+            const xhttp = new XMLHttpRequest();
+            xhttp.open('POST', '/product/addToWishlist', true);
+            xhttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+
+            xhttp.onload = function() {
+                console.log(this.responseText);
+            }
+
+            xhttp.send(params);
+
+            changeButton(wishlistButton)
+        }
+
+        function removeFromWishlist(e) {
+            var wishlistButton = document.getElementById('removewishlist-button');
+            e.preventDefault();
+            var params = "id=" + product_id;
+            const xhttp = new XMLHttpRequest();
+
+            xhttp.open('POST', '/product/removeFromWishlist', true);
+
+            xhttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+
+            xhttp.onload = function() {
+                console.log(this.responseText);
+            }
+
+            xhttp.send(params);
+
+            changeButton(wishlistButton)
+        }
+
+        function changeButton(btn) {
+            if (btn.style.backgroundColor == "red") {
+                btn.style.backgroundColor = "#1DA1F2";
+            } else {
+                btn.style.backgroundColor = "red";
+            }
+        }
+
+        function zoomImage() {
+            document.getElementById('overlay').style.display = "block";
+            var container = document.getElementById('hidden-container');
+            container.style.display = "block";
+        }
+
+        function change(e) {
+            var source = e.getAttribute("src")
+            document.getElementById('top-image').src = source;
+        }
+
+        function close() {
+            console.log('dadafh')
+            document.getElementById('overlay').style.display = "none";
+            document.getElementById('hidden-container').style.display = "none";
+        }
+    </script>
+
+    </html>

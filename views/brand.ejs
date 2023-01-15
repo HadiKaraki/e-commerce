@@ -1,0 +1,63 @@
+<% layout('layouts/boilerplate')%>
+
+    <head>
+        <meta charset="UTF-8">
+        <title>
+            <%= brandProducts[0].brand %> products
+        </title>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <link rel="stylesheet" href="/Brand.css">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    </head>
+
+
+    <section id="container">
+        <% for(let product of brandProducts) {%>
+            <a href="/product/<%= product._id %> ">
+                <div id="product">
+                    <div id="image">
+                        <img src="<%= product.images[0].url %> " class="lazy">
+                    </div>
+                    <div id="bottom-panel">
+                        <div id="description">
+                            <strong>
+                                <p>
+                                    <%= product.name %>
+                                </p>
+                            </strong>
+                        </div>
+                        <div id="price">
+                            <p>
+                                $
+                                <%= product.price %>
+                            </p>
+                        </div>
+                        <div id="in-stock">
+                            <p>
+                                <%= product.nb_in_stock %> in stock
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </a>
+            <% } %>
+                <% if(brandProducts.length<=2) {%>
+                    <style>
+                        @media (max-width: 359px) {
+                            #footer {
+                                position: fixed !important;
+                                bottom: 0 !important;
+                                width: 100% !important;
+                            }
+                        }
+
+                        @media (min-width: 400px) {
+                            #footer {
+                                position: fixed !important;
+                                bottom: 0 !important;
+                                width: 100% !important;
+                            }
+                        }
+                    </style>
+                    <% } %>
+    </section>

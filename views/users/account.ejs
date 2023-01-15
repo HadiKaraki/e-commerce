@@ -1,0 +1,44 @@
+<% layout('layouts/boilerplate')%>
+
+    <head>
+        <meta charset="utf-8">
+        <link rel="stylesheet" href="/Account.css">
+        <link rel="stylesheet" href="/Stars.css">
+        <title>Account</title>
+    </head>
+
+        <div class="bg"></div>
+        <div class="center">
+            <h1>Edit Account</h1>
+            <form action="/user/account" method="POST">
+                <span>First name</span>
+                <div class="txt_field">
+                    <input type="text" name="user[first_name]" value="<%=currentUser.first_name %>">
+                </div>
+                <span>Last name</span>
+                <div class="txt_field">
+                    <input type="text" name="user[last_name]" value="<%=currentUser.last_name  %>">
+                </div>
+                <span>Address name</span>
+                <div class="txt_field">
+                    <input type="text" name="user[address]" value="<%=currentUser.address  %>">
+                </div>
+                <div class="alert alert-danger" role="alert" style="display: none;" id="alertPhone">
+                    Phone number already taken
+                    <button type="button" style="border: 0; float: right;" id="closePhoneBtn">x</button>
+                </div>
+                <span>Phone number</span>
+                <div class="txt_field">
+                    <input type="text" name="user[phone_nb]" value="<%=currentUser.phone_nb  %>">
+                </div>
+                <span>Title</span>
+                <div class="select_field">
+                    <select name="title">
+                        <option>Mr</option>
+                        <option>Mrs</option>
+                    </select>
+                </div>
+                <button type="button" id="submitButton" type="submit">Submit</button>
+            </form>
+        </div>
+        <script src="/verify.js"></script>

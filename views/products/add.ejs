@@ -1,0 +1,55 @@
+<% layout('layouts/boilerplate')%>
+
+    <head>
+        <meta charset="utf-8">
+        <title>Add product</title>
+        <link rel="stylesheet" href="/Newproduct.css">
+    </head>
+
+    <body>
+        <div class="center">
+            <h1>New product</h1>
+            <form action="/product/new" method="POST" enctype="multipart/form-data">
+                <div class="txt_field">
+                    <input type="text" name="product[name]" placeholder="Name" required>
+                </div>
+                <div class="txt_field">
+                    <input type="text" name="product[brand]" placeholder="Brand" required>
+                </div>
+                <div class="txt_field">
+                    <input type="text" name="product[price]" placeholder="Price" required>
+                </div>
+                <div class="txt_field">
+                    <input type="text" name="product[description]" placeholder="Description" required>
+                </div>
+                <div class="txt_field">
+                    <input type="text" name="product[code]" placeholder="Code" required>
+                </div>
+                <div class="txt_field">
+                    <input type="text" name="product[nb_in_stock]" placeholder="Nb in stock" required>
+                </div>
+                <div class="select_field">
+                    <span>In stock?</span>
+                    <select name="product[in_stock]" required>
+                        <option>true</option>
+                        <option>false</option>
+                    </select>
+                </div>
+                <div class="select_field">
+                    <select name="product[category]" required>
+                        <option>TV</option>
+                        <option>MOBILE</option>
+                        <option>APPLIANCE</option>
+                        <option>CAMERA</option>
+                        <option>GAMING</option>
+                        <option>LAPTOP</option>
+                    </select>
+                </div>
+                <div class="file_field">
+                    <input type="file" id="image" name="image" multiple required>
+                </div>
+                <input type="submit" value="Add product">
+            </form>
+        </div>
+
+    </body>
